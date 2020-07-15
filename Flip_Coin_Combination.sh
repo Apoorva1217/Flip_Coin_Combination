@@ -161,3 +161,55 @@ echo "TTT percentage:"
 val=${dict[TTT]}
 dict[TTT]=`echo "scale=2;$val/$n*100" | bc`
 echo ${dict[TTT]}
+
+index=0
+arr[((index++))]=${dict[H]}
+arr[((index++))]=${dict[T]}
+arr[((index++))]=${dict[HH]}
+arr[((index++))]=${dict[HT]}
+arr[((index++))]=${dict[TH]}
+arr[((index++))]=${dict[TT]}
+arr[((index++))]=${dict[HHH]}
+arr[((index++))]=${dict[HHT]}
+arr[((index++))]=${dict[HTH]}
+arr[((index++))]=${dict[THH]}
+arr[((index++))]=${dict[TTH]}
+arr[((index++))]=${dict[THT]}
+arr[((index++))]=${dict[HTT]}
+arr[((index))]=${dict[TTT]}
+
+echo ${arr[@]}
+len=$((${#arr[@]}))
+temp=0
+
+for(( i=0; i<=12; i++ ))
+do
+	for (( j=i+1; j<=12; j++ ))
+	do
+		if [ $(echo "${arr[i]}<${arr[j]}" | bc) -eq 1 ]
+		then
+			temp=${arr[i]}
+			arr[i]=${arr[j]}
+			arr[j]=$temp
+		fi
+	done
+done
+echo ${arr[@]}
+max=${arr[0]}
+
+case $max in
+	${dict[H]}) echo "Singlet Combination is Winner" ;;
+	${dict[T]}) echo "Singlet Combination is Winner" ;;
+	${dict[HH]}) echo "Doublet Combination is Winner" ;;
+	${dict[HT]}) echo "Doublet Combination is Winner" ;;
+	${dict[TH]}) echo "Doublet Combination is Winner" ;;
+	${dict[TT]}) echo "Doublet Combination is Winner" ;;
+	${dict[HHH]}) echo "Triplet Combination is Winner" ;;
+	${dict[HHT]}) echo "Triplet Combination is Winner" ;;
+	${dict[HTH]}) echo "Triplet Combination is Winner" ;;
+	${dict[THH]}) echo "Triplet Combination is Winner" ;;
+	${dict[TTH]}) echo "Triplet Combination is Winner" ;;
+	${dict[THT]}) echo "Triplet Combination is Winner" ;;
+	${dict[HTT]}) echo "Triplet Combination is Winner" ;;
+	${dict[TTT]}) echo "Triplet Combination is Winner" ;;
+esac
